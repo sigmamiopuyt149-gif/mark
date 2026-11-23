@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="js/theme-init.js"></script>
+<meta name="theme-color" content="#f7f8fc">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&display=swap">
+<title>เว็บไซต์สกอร์บอร์ด – วิทยาลัยเทคนิคบ้านค่าย</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="view">
+<header class="top">
+  <div class="lg" role="img" aria-label="โลโก้วิทยาลัยเทคนิคบ้านค่าย"></div>
+  <div class="ti"><b>เว็บไซต์สกอร์บอร์ด</b><span>วิทยาลัยเทคนิคบ้านค่าย <em id="roleTag" class="rtag">ผู้ชม</em></span></div>
+  <button class="thb" id="thBtn" aria-label="ธีมสี" title="ธีมสี">🌓</button>
+  <button class="menub" id="menuB" aria-label="เมนู">☰</button>
+  <nav class="menu" id="menu"><button id="mHome">🏠 สกอร์บอร์ด</button><button id="mEv">📋 บันทึกเหตุการณ์</button><button id="mLu">👥 ตัวจริง</button><button id="mTbl">🏅 ตารางคะแนน</button><button id="mHist">🏆 ประวัติการแข่งขัน</button><button id="mSched">📅 ตารางนัดแข่ง</button><button id="mLogin">🔐 เข้าสู่ระบบ</button><button id="mReg">👤 ลงทะเบียน</button><button id="mAdmin">🔐 โหมดแอดมิน</button></nav>
+</header>
+<div class="note" id="liveNote"></div>
+
+<div class="bug">
+  <div class="plrow">
+    <div class="pt" id="tmA"><span id="abA">เหย้า</span></div>
+    <div class="mid"><div class="ps" id="psA">0</div><div class="lg lgm"></div><div class="ps" id="psB">0</div></div>
+    <div class="pt" id="tmB"><span id="abB">เยือน</span></div>
+  </div>
+  <div class="clkbox"><span id="time">00:00</span><small id="stat">พร้อม</small></div>
+  <div class="goalbar" id="goalbar"><div class="gpat"></div><div class="gart" id="gart">⚽</div><div class="gbd" id="gbd"></div><div class="in"><div class="g1" id="g1">⚽ ประตู!</div><div class="g2" id="g2"></div></div><div class="lg glg"></div><div class="gpf"><i style="--x:30%;--k:0"></i><i style="--x:44%;--k:1"></i><i style="--x:58%;--k:2"></i><i style="--x:72%;--k:3"></i><i style="--x:86%;--k:4"></i></div><div class="gshine"></div><div class="gfx"></div></div>
+</div>
+
+<main id="vw">
+  <div class="vtop" id="vtop"><button class="lvpill" id="lvTg">● สด</button><div class="dtabs" id="dtabs"></div></div>
+  <div id="vScreen"></div>
+</main>
+<div class="spline" id="spLine"></div>
+<div class="res" id="resLine"></div>
+
+<div class="panel adm" data-sec="live">
+  <h2>🏟 ประเภทกีฬาและหมวดหมู่</h2>
+  <div class="grid">
+    <label>กีฬา<select id="spSel"><option value="football">⚽ ฟุตบอล</option><option value="basketball">🏀 บาสเกตบอล</option><option value="volleyball">🏐 วอลเลย์บอล</option><option value="takraw">🥎 เซปักตะกร้อ</option></select></label>
+    <label>หมวดหมู่<select id="catSel"><option value="m">👨 ชาย</option><option value="f">👩 หญิง</option><option value="x">👫 ผสม</option></select></label>
+  </div>
+  <div class="row setonly"><button id="endSetBtn">🏁 จบเซ็ต (ให้ทีมที่นำ)</button></div>
+  <p class="setonly" style="font-size:.8rem;color:var(--muted);margin:8px 0 0">วอลเลย์บอลแข่ง 5 เซ็ต (ถึง 25 แต้ม เซ็ตตัดสิน 15) • ตะกร้อ 3 เซ็ต (ถึง 21 แต้ม) ต้องห่างกัน 2 แต้ม ระบบจบเซ็ตให้เองอัตโนมัติ</p>
+</div>
+
+<div class="panel adm" data-sec="live">
+  <h2>⚽ ทีมและประตู</h2>
+  <div class="tpk" id="tpk">
+    <div class="tpkh"><span>เลือกสีทีม (แตะสีเพื่อใส่ให้ทีมที่เลือก)</span><div class="tpks" id="tpks"><button type="button" data-s="A" class="on">ทีม A</button><button type="button" data-s="B">ทีม B</button></div></div>
+    <div class="tpkg" id="tpkg"></div>
+  </div>
+  <div class="teams">
+    <div class="tc" id="cA">
+      <input type="text" id="nameA" value="ทีมเหย้า" maxlength="18" aria-label="ชื่อทีมเหย้า">
+      <input type="text" class="abbr" id="inA" value="เหย้า" maxlength="5" aria-label="ตัวย่อทีมเหย้า">
+      <div class="line"><input type="color" id="colA" value="#1e88e5"> สีทีม</div>
+      <div class="goalbtns" id="gbA"><button class="minus" data-t="A" data-d="-1">−1</button><button class="plus" data-t="A" data-d="1">+1 ประตู</button></div>
+    </div>
+    <div class="tc" id="cB">
+      <input type="text" id="nameB" value="ทีมเยือน" maxlength="18" aria-label="ชื่อทีมเยือน">
+      <input type="text" class="abbr" id="inB" value="เยือน" maxlength="5" aria-label="ตัวย่อทีมเยือน">
+      <div class="line"><input type="color" id="colB" value="#e53935"> สีทีม</div>
+      <div class="goalbtns" id="gbB"><button class="minus" data-t="B" data-d="-1">−1</button><button class="plus" data-t="B" data-d="1">+1 ประตู</button></div>
+    </div>
+  </div>
+  <div class="line" style="margin-top:12px"><input type="color" id="colT" value="#1d4ed8"> สีธีมหลัก / แถบเวลา</div>
+</div>
+
+<div class="panel adm" data-sec="live">
+  <h2>🚩 ยกเลิกประตู / VAR</h2>
+  <div class="grid">
+    <label>ทีมที่เกี่ยวข้อง<select id="cxTeam"><option value="A">ทีมเหย้า</option><option value="B">ทีมเยือน</option></select></label>
+    <label>ตัดสินโดย<select id="cxBy"><option>กรรมการ</option><option>VAR</option><option>แอดมิน</option></select></label>
+    <label style="grid-column:1/-1">เหตุผลที่ยกเลิกประตู<select id="cxWhy"><option>ล้ำหน้า (Offside)</option><option>ฟาวล์ (Foul)</option><option>แฮนด์บอล (Handball)</option><option>ลูกบอลออกนอกสนามก่อนยิง</option><option>กรรมการเป่านกหวีดก่อนยิง</option><option value="อื่น ๆ">อื่น ๆ (พิมพ์เอง)</option></select></label>
+  </div>
+  <div class="cx" id="cxBox" style="display:none"><input type="text" id="cxTxt" maxlength="60" placeholder="พิมพ์เหตุผล เช่น ผู้เล่นกีดขวางผู้รักษาประตู"></div>
+  <div class="row">
+    <button class="red" id="cxBtn">❌ ยกเลิกประตู</button>
+    <button class="vio" id="varBtn">🖥 VAR ตรวจสอบ</button>
+    <button class="go" id="okBtn">✅ ยืนยันประตู</button>
+  </div>
+  <div class="vcalc">
+    <div><span>⏱ VAR ครั้งนี้</span><b id="vNow">00:00</b></div>
+    <div><span>เสียเวลารวม</span><b id="vTot">00:00</b></div>
+    <div><span>จำนวนครั้งที่ตรวจ</span><b id="vCnt">0</b></div>
+    <div><span>ควรทดเวลาเพิ่ม</span><b id="vAdd">+0 นาที</b></div>
+  </div>
+  <label class="chk"><input type="checkbox" id="vAuto"> เพิ่มเวลาที่เสียเข้า "ทดเวลา" อัตโนมัติเมื่อ VAR จบ</label>
+  <div class="row"><button class="ghost" id="vReset">รีเซ็ตเวลา VAR</button></div>
+  <p style="font-size:.8rem;color:var(--muted);margin:10px 0 0">กด VAR ตรวจสอบ นาฬิกาจะหยุดทันทีและเริ่มจับเวลาที่เสียไป ยืนยัน/ยกเลิกประตูเพื่อจบการตรวจและเดินเวลาต่อ (ถ้านาฬิกาเดินอยู่ก่อนหน้า)</p>
+</div>
+
+<div class="panel adm tmp" data-sec="live">
+  <h2>⏱ ตั้งค่าเวลา</h2>
+  <div class="grid">
+    <label>เริ่มที่นาที<input type="number" id="inStart" value="0" min="0" max="150"></label>
+    <label>หยุดที่นาที (เช่น 45, 90)<input type="number" id="inStop" value="45" min="1" max="150"></label>
+    <label>ทดเวลาบาดเจ็บ (นาที)<input type="number" id="inAdd" value="0" min="0" max="30"></label>
+    <label>ความเร็วนาฬิกา<select id="inSpd"><option value="1">1× เวลาจริง</option><option value="5">5×</option><option value="15">15×</option><option value="60">60× (1 วิ = 1 นาที)</option></select></label>
+  </div>
+  <p id="stopInfo" style="margin:10px 0 0;font-size:.85rem;font-weight:700;color:var(--ak)"></p>
+  <div class="row">
+    <button id="apply">ตั้งเวลา</button>
+    <button class="go" id="run">▶ เริ่ม</button>
+    <button class="ghost" id="resetT">รีเซ็ตเวลา</button>
+  </div>
+  <div class="row">
+    <button class="ghost" data-p="0,45">ครึ่งแรก</button>
+    <button class="ghost" data-p="45,90">ครึ่งหลัง</button>
+    <button class="ghost" data-p="90,105">ต่อเวลา 1</button>
+    <button class="ghost" data-p="105,120">ต่อเวลา 2</button>
+  </div>
+  <p style="font-size:.8rem;color:var(--muted);margin:10px 0 0">เมื่อนาฬิกาถึงเวลาที่ตั้งไว้ (รวมทดเวลา) จะหยุดเอง หากเกินเวลาปกติจะแสดงแบบ 45+2</p>
+</div>
+
+<div class="panel adm" data-sec="live">
+  <h2>📋 บันทึกเหตุการณ์การแข่งขัน</h2>
+  <p id="evCount" style="margin:0 0 10px;font-size:.88rem;color:var(--muted)"></p>
+  <div class="row" style="margin:0"><button class="go btnFin">🏁 จบแมตช์ และบันทึกประวัติ</button><button class="ghost btnNew">🆕 แมตช์ใหม่</button></div>
+  <div class="row"><button id="repOpen">📋 เปิดดูบันทึก / ประวัติ</button><button class="ghost" id="resetAll">รีเซ็ตทั้งหมด (คะแนน + เวลา + บันทึก)</button></div>
+</div>
+
+<div class="panel adm" data-sec="sch">
+  <h2>🗑 จัดการประวัติการแข่งขัน</h2>
+  <div id="hmList"></div>
+  <div class="row"><button class="ghost" id="hmCsv">📄 คัดลอกประวัติเป็น CSV</button></div>
+  <div class="row"><button class="ghost" id="hmAll" style="color:#d93a3a;border-color:#d93a3a">ลบประวัติทั้งหมด</button></div>
+</div>
+
+<div class="panel adm" data-sec="sch" id="schNew"><h2>📅 นัดวันแข่ง</h2><div id="scMain2"></div><details class="scad" id="scAdm" open><summary>➕ เพิ่มนัดแข่ง</summary>
+ <div class="scfm">
+  <div class="w"><span class="sl">1) เลือกสีแข่งขัน — ทีมแรก</span><div class="sws" id="swA"></div></div>
+  <div class="w"><span class="sl">ทีมสอง</span><div class="sws" id="swB"></div></div>
+  <div class="w"><span class="sl">2) ประเภทกีฬา</span><div class="sws" id="swS"></div></div>
+  <div class="w"><span class="sl">หมวด</span><div class="sws" id="swC"></div></div>
+  <label>3) วันที่<input type="date" id="scDate"></label><label>เวลา<input type="time" id="scTime" value="09:00"></label>
+  <div class="w scq" id="scQ"></div>
+  <select id="scA" hidden></select><select id="scB" hidden></select><select id="scSp" hidden></select><select id="scCt" hidden></select>
+  <button id="scAdd">➕ เพิ่มนัดแข่ง</button>
+  <button type="button" id="scCancel" hidden style="background:var(--bg);color:var(--text);border:2px solid var(--line)">ยกเลิกการแก้ไข</button>
+ </div>
+ <details class="scmore"><summary>ตัวเลือกเพิ่มเติม (รอบ สนาม / สร้างโปรแกรมอัตโนมัติ)</summary>
+  <div class="scfm">
+   <label>รอบ<select id="scRd"><option value="g">รอบพบกันหมด</option><option value="t">ชิงที่ 3</option><option value="f">ชิงชนะเลิศ</option><option value="x">แมตช์พิเศษ</option></select></label>
+   <label>สนาม / สถานที่<input type="text" id="scV" list="scVl" maxlength="40" placeholder="เช่น สนามฟุตบอล"></label></div>
+  <div class="scfm"><b>⚡ สร้างโปรแกรมพบกันหมดอัตโนมัติ (6 นัด + ชิงที่ 3 + ชิงชนะเลิศ)</b>
+   <label>กีฬา<select id="gSp"></select></label><label>หมวด<select id="gCt"></select></label>
+   <label>วันเริ่มแข่ง<input type="date" id="gDate"></label><label>เวลานัดแรก<input type="time" id="gTime" value="09:00"></label>
+   <label>ห่างนัดละ (นาที)<input type="number" id="gGap" value="40" min="5" max="600"></label><label>สนาม<input type="text" id="gV" list="scVl" maxlength="40"></label>
+   <button id="scGen">⚡ สร้างโปรแกรม</button></div>
+ </details>
+ <datalist id="scVl"><option value="สนามฟุตบอล"><option value="สนามบาสเกตบอล"><option value="สนามวอลเลย์บอล"><option value="สนามตะกร้อ"><option value="โรงยิม"></datalist>
+</details></div>
+
+<div class="panel adm" data-sec="sch">
+  <h2>📝 นัดแข่งแบบกำหนดชื่อทีมเอง</h2>
+  <div class="grid">
+    <label style="grid-column:1/-1">วัน-เวลาแข่ง<input type="datetime-local" id="fxWhen"></label>
+    <label>เลือกทีมเหย้าจากทะเบียน<select id="fxSelA"></select></label><label>เลือกทีมเยือนจากทะเบียน<select id="fxSelB"></select></label>
+    <label>ทีมเหย้า<input type="text" id="fxA" maxlength="18"></label>
+    <label>ทีมเยือน<input type="text" id="fxB" maxlength="18"></label>
+    <label>สีทีมเหย้า<input type="color" id="fxCA" value="#1e88e5"></label>
+    <label>สีทีมเยือน<input type="color" id="fxCB" value="#e53935"></label>
+  </div>
+  <div class="row"><button id="fxAdd">➕ เพิ่มนัดแข่ง (ตามกีฬา/หมวดหมู่ที่เลือกไว้)</button></div>
+  <div id="fxList"></div>
+</div>
+
+<div class="panel adm" data-sec="team">
+  <h2>👥 รายชื่อตัวจริง <small id="luCnt" style="color:var(--muted)">0/11</small></h2>
+  <div class="grid">
+    <label>ทีม<select id="luTeam"><option value="A">ทีมเหย้า</option><option value="B">ทีมเยือน</option></select></label>
+    <label>เบอร์เสื้อ<input type="number" id="luNo" min="0" max="99"></label>
+    <label style="grid-column:1/-1">ชื่อ-นามสกุล<input type="text" id="luName" maxlength="40"></label>
+    <label>ตำแหน่ง<input type="text" id="luPos" maxlength="16" placeholder="เช่น GK, กองหน้า"></label>
+    <label>รูปถ่าย<input type="file" id="luPh" accept="image/*"></label>
+    <label style="grid-column:1/-1">เพิ่มเป็น<select id="luRole"><option value="s">ตัวจริง (สูงสุด 11 คน)</option><option value="b">ตัวสำรอง (สูงสุด 12 คน)</option></select></label>
+  </div>
+  <div class="row"><button id="luAdd">➕ เพิ่มผู้เล่น</button><button class="ghost" id="luCancel" style="display:none">ยกเลิกแก้ไข</button><button class="ghost" id="luClr">ล้างรายชื่อทีมนี้</button></div>
+  <div id="luSt" style="font-size:.84rem;margin-top:6px;font-weight:600"></div>
+  <label style="display:block;margin-top:10px;font-size:.82rem;color:var(--muted)">เพิ่มทีละหลายคน (บรรทัดละ 1 คน เช่น <b>1 สมชาย</b> หรือ <b>1,สมชาย,GK</b>)<textarea id="luBulk" rows="4" style="width:100%;font:inherit;border:2px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--text);margin-top:4px"></textarea></label>
+  <div class="row"><button class="ghost" id="luBulkBtn">➕ เพิ่มจากรายการ</button></div>
+  <div id="luList"></div>
+  <div class="row"><button class="go" data-ann="A">📣 ประกาศตัวจริง ทีมเหย้า</button><button class="go" data-ann="B">📣 ประกาศตัวจริง ทีมเยือน</button></div>
+</div>
+
+<div class="panel adm" data-sec="live">
+  <h2>🎯 บันทึกเหตุการณ์ของผู้เล่น</h2>
+  <div class="grid">
+    <label>ทีม<select id="pvTeam"><option value="A">ทีมเหย้า</option><option value="B">ทีมเยือน</option></select></label>
+    <label>ผู้เล่น<select id="pvPl"></select></label>
+    <label style="grid-column:1/-1">เหตุการณ์<select id="pvEv"><option value="goal">⚽ ทำประตู/ได้แต้ม</option><option value="og">🥅 ทำประตูเข้าตัวเอง</option><option value="yc">🟨 ใบเหลือง</option><option value="rc">🟥 ใบแดง</option><option value="foul">⚠️ ฟาวล์</option><option value="sub">🔁 เปลี่ยนตัวออก</option><option value="ast">👟 แอสซิสต์</option><option value="rate">⭐ ให้คะแนนผู้เล่น</option></select></label>
+    <label id="pvInWrap" style="grid-column:1/-1;display:none">ผู้เล่นที่ลงแทน (เลือกจากตัวสำรอง)<select id="pvIn"></select></label>
+    <label style="grid-column:1/-1">ค่าเพิ่มเติม (คะแนน 0-10 / <b>ชื่อผู้ลงแทนคนใหม่</b> / แต้มบาสเกตบอล 1-3)<input type="text" id="pvVal" maxlength="30"></label>
+  </div>
+  <div class="row"><button id="pvGo">✔ บันทึกเหตุการณ์</button></div>
+  <div id="pvSt" style="font-size:.84rem;margin-top:6px;font-weight:600;color:var(--ak)"></div>
+</div>
+
+<div class="panel adm" data-sec="dash" id="dashPanel">
+  <h2>🏠 ภาพรวมระบบหลังบ้าน</h2>
+  <div class="sum" id="dashSum"></div>
+  <div class="row"><button data-go="live">🎮 ควบคุมการแข่งขันสด</button><button class="ghost" data-go="sch">📅 ตารางแข่ง/ประวัติ</button></div>
+  <div class="row"><button class="go btnFin">🏁 จบแมตช์ และบันทึกประวัติ</button><button class="ghost btnNew">🆕 แมตช์ใหม่</button></div>
+  <div class="dh">🕘 กิจกรรมล่าสุดของแมตช์นี้</div><ul class="evu" id="dashEv"></ul>
+  <div class="dh">🏆 ผลการแข่งขันล่าสุด</div><div id="dashRes"></div>
+</div>
+
+<div class="panel adm" data-sec="team">
+  <h2>🏫 ทะเบียนทีม (บันทึกไว้ใช้ซ้ำ)</h2>
+  <div class="grid">
+    <label>ชื่อทีม<input type="text" id="tmName" maxlength="18"></label>
+    <label>ตัวย่อ 3 ตัว<input type="text" id="tmAb" maxlength="3" style="text-transform:uppercase"></label>
+    <label>สีทีม<input type="color" id="tmCol" value="#1e88e5"></label>
+    <label>โลโก้ทีม (ถ้ามี)<input type="file" id="tmLg" accept="image/*"></label>
+  </div>
+  <div class="row"><button id="tmAdd">➕ เพิ่มทีมเข้าทะเบียน</button></div>
+  <div id="tmList"></div>
+</div>
+
+<div class="panel adm" data-sec="set" id="setPanel">
+  <h2>⚙️ ตั้งค่าระบบ</h2>
+  <div class="dh">🎨 โหมดการแสดงผล</div><div class="themes" id="stThemes"></div>
+  <div class="dh">📡 สถานะระบบ</div><div id="stInfo"></div>
+  <div class="dh">💾 สำรอง / กู้คืนข้อมูล</div>
+  <div class="row"><button id="bkCopy">📤 คัดลอกข้อมูลสำรอง</button></div>
+  <label style="display:block;margin-top:8px;font-size:.82rem;color:var(--muted)">วางข้อมูลสำรองที่นี่เพื่อกู้คืน<textarea id="bkTxt" rows="3" style="width:100%;font:inherit;border:2px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--text);margin-top:4px"></textarea></label>
+  <div class="row"><button class="ghost" id="bkRestore">📥 กู้คืนข้อมูล</button></div>
+  <div id="bkMsg" style="font-size:.84rem;font-weight:600;margin-top:6px"></div>
+  <div class="dh">👤 ผู้ดูแลระบบ</div>
+  <p style="font-size:.84rem;color:var(--muted);margin:0">ผู้ที่มีสิทธิ์แก้ไขหน้านี้ (เจ้าของหรือบรรณาธิการ) จะเข้าโหมดแอดมินได้อัตโนมัติ ส่วนผู้ชมทั่วไปแก้ไขข้อมูลไม่ได้ เพิ่มผู้ดูแลได้ที่ปุ่มแชร์ของหน้านี้</p>
+</div>
+
+<div class="panel" id="standPanel" data-sec="dash">
+  <h2>🏅 ตารางคะแนน</h2>
+  <div id="stand"></div>
+</div>
+
+<div class="panel" id="cupPanel" data-sec="dash">
+  <h2>🏆 สายสี 4 ทีม • ชิงชนะเลิศ / ชิงที่ 3</h2>
+  <div id="cupBox" class="cup"></div>
+</div>
+
+<nav id="bnav">
+  <button data-bs="dash" class="on"><i>🏠</i><span>ภาพรวม</span></button>
+  <button data-bs="live"><i>🎮</i><span>แข่งขันสด</span></button>
+  <button data-bs="team"><i>👥</i><span>ทีม/ผู้เล่น</span></button>
+  <button data-bs="sch"><i>📅</i><span>ตาราง/ประวัติ</span></button>
+  <button data-bs="set"><i>⚙️</i><span>ตั้งค่า</span></button>
+</nav>
+<nav id="vnav">
+  <button data-v="matches" class="on"><i>⚽</i><span>แมตช์</span></button>
+  <button data-v="table"><i>🏅</i><span>ตารางคะแนน</span></button>
+  <button data-v="hist"><i>🏆</i><span>ประวัติ</span></button>
+  <button data-v="more"><i>☰</i><span>เพิ่มเติม</span></button>
+</nav>
+<div id="md"></div>
+<div id="ann"></div>
+<button class="fab" id="fab">📋 บันทึก<span id="fabN">0</span></button>
+
+<div class="rep" id="rep">
+  <div class="sheet">
+    <div class="rh"><b>📋 รายงานเหตุการณ์การแข่งขัน</b><button id="repClose">✕ ปิด</button></div>
+    <div class="chips" style="margin-top:0"><button class="chip on" id="tabEv">📋 เหตุการณ์</button><button class="chip" id="tabLu">👥 ตัวจริง</button><button class="chip" id="tabHist">🏆 ประวัติ (<span id="hN">0</span>)</button></div>
+    <div id="evView">
+    <div id="resBox"></div>
+    <div class="row adm" style="margin:8px 0 12px"><button class="go btnFin">🏁 จบแมตช์ และบันทึกประวัติ</button><button class="ghost btnNew">🆕 แมตช์ใหม่</button></div>
+    <div class="sum" id="sum"></div>
+    <div class="chips" id="chips"></div>
+    <div class="legend" id="legend"></div>
+    <ul id="evl"></ul>
+    <div class="row"><button id="repCopy">คัดลอกรายงาน</button><button class="ghost adm" id="repUndo">ลบรายการล่าสุด (ไม่กระทบคะแนน)</button></div>
+    </div>
+    <div id="histView" style="display:none"></div>
+    <div id="luView" style="display:none"></div>
+  </div>
+</div>
+
+<script src="js/scoreboard-core.js"></script>
+
+<div class="regb" id="regBack" hidden><div class="regc">
+  <div class="regh"><b>👤 ลงทะเบียน / บัญชีผู้ใช้</b><button id="regX" aria-label="ปิด">✕</button></div>
+  <div id="rgWho"></div>
+  <div id="rgForm">
+    <label>ชื่อ-นามสกุล<input type="text" id="rgName" maxlength="40" autocomplete="name"></label>
+    <label>ห้อง / ชั้น<input type="text" id="rgRoom" maxlength="20" placeholder="เช่น ปวช.2/1"></label>
+    <label>บทบาท<select id="rgRole"><option>นักเรียน</option><option>ครู/บุคลากร</option><option>ผู้ปกครอง</option><option>ผู้ชมทั่วไป</option></select></label>
+    <div style="font-weight:700;font-size:.85rem">สีที่สังกัด</div><div class="rgcol" id="rgCols"></div>
+    <button class="rgsave" id="rgSave">บันทึกการลงทะเบียน</button>
+    <div class="rgmsg" id="rgMsg"></div>
+  </div>
+  <div class="rgl" id="rgList" hidden></div>
+</div></div>
+<script src="js/registration.js"></script>
+<div class="lgb" id="lgBack" hidden><div class="lgc">
+  <button class="lgx" id="lgX" aria-label="ปิด">✕</button>
+  <div class="lgi"><img id="lgImg" alt="โลโก้"></div>
+  <h2>เข้าสู่ระบบ</h2><p>กรุณาเข้าสู่ระบบเพื่อใช้งานระบบ</p>
+  <div class="lgf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><input id="lgU" type="text" placeholder="ชื่อผู้ใช้ หรือ อีเมล" autocomplete="username"></div>
+  <div class="lgf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="lgP" type="password" placeholder="รหัสผ่าน" autocomplete="current-password"><button id="lgEye" aria-label="แสดงรหัสผ่าน">👁</button></div>
+  <a class="lgfg" id="lgFg">ลืมรหัสผ่าน?</a>
+  <button class="lgmain" id="lgGo">เข้าสู่ระบบ</button>
+  <div class="lgor"><span>หรือเข้าสู่ระบบด้วย</span></div>
+  <div class="lgs">
+    <button id="lgG"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Google</button>
+    <button id="lgF"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877f2"/><path fill="#fff" d="M13.2 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.1 1.2-1.1h1.2V6c-.2 0-.9-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.6H8.8V13h2V19z"/></svg>Facebook</button>
+    <button id="lgL"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#06c755"/><text x="12" y="15" text-anchor="middle" font-size="7" font-weight="800" fill="#fff" font-family="sans-serif">LINE</text></svg>LINE</button>
+  </div>
+  <div class="lgmsg" id="lgMsg" role="status"></div><div class="lgmsg" id="lgSt" style="font-size:.78rem"></div>
+  <div class="lgft"><a class="lgfg" id="lgReg" style="text-align:center;margin:0 0 6px">ยังไม่มีบัญชี? สมัครสมาชิก</a>สกอร์บอร์ดกีฬาสี • วิทยาลัยเทคนิคบ้านค่าย</div>
+</div></div>
+<script src="js/login.js"></script>
+<div class="scb" id="scBack" hidden>
+<div class="sch"><h2>📅 ตารางนัดวันแข่ง</h2><button id="scX" aria-label="ปิด">✕ ปิด</button></div>
+<div class="scw"><div id="scMain"></div>
+</div></div>
+<script src="js/fixtures.js"></script>
+<script src="js/background-effects.js"></script>
+<div id="land" role="dialog" aria-label="หน้าแรก">
+ <div class="bl" style="width:260px;height:260px;left:-80px;top:40px;background:#38bdf8"></div>
+ <div class="bl" style="width:240px;height:240px;right:-90px;top:46%;background:#2563eb;animation-delay:-5s"></div>
+ <div class="fl" id="lndFl"></div>
+ <div class="lgoW" id="lndLogo" role="button" aria-label="โลโก้วิทยาลัย"><div class="ring"></div><div class="pl"></div><div class="pl b"></div><div class="orb" id="lndOrb"></div><img id="lgoMain" alt="โลโก้วิทยาลัยเทคนิคบ้านค่าย"><div class="sh"></div></div>
+ <h1><span>ระบบรายงานผลกีฬาสี</span></h1>
+ <p class="sub">วิทยาลัยเทคนิคบ้านค่าย</p>
+ <div id="lndTy"></div>
+ <div class="lnc">
+  <div style="animation-delay:.1s"><small id="lndNk">⏭ แมตช์ถัดไป</small><b id="lndNx">กำลังโหลด...</b></div>
+  <div style="animation-delay:.25s"><small>🏅 เหรียญทองสะสมของแต่ละสี</small><div class="lnm" id="lndMd"></div></div>
+ </div>
+ <div class="lnbt">
+  <button class="lnp" id="lndLogin">🔐 เข้าสู่ระบบแอดมิน</button>
+  <div class="lnr"><button class="lns" id="lndView">👤 เข้าสู่ระบบผู้ชม</button><button class="lns" id="lndSch">📅 ตารางนัดแข่ง</button></div>
+ </div>
+ <p class="lnh">ผู้ชมใส่ชื่อเล่นแล้วดูผลสดได้เลย<br>ครู/แอดมินกดเข้าสู่ระบบเพื่อบันทึกคะแนน</p>
+ <div class="lno">หรือเข้าสู่ระบบด้วย</div>
+ <div class="lnso">
+  <button class="lnso1" id="lndG" aria-label="Google"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></button>
+  <button class="lnso1" id="lndF" aria-label="Facebook"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877f2"/><path fill="#fff" d="M13.2 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.1 1.2-1.1h1.2V6c-.2 0-.9-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.6H8.8V13h2V19z"/></svg></button>
+  <button class="lnso1" id="lndL" aria-label="LINE"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#06c755"/><text x="12" y="15" text-anchor="middle" font-size="7" font-weight="800" fill="#fff" font-family="sans-serif">LINE</text></svg></button>
+ </div>
+ <div class="lnft">วิทยาลัยเทคนิคบ้านค่าย<br>สำนักงานคณะกรรมการการอาชีวศึกษา</div>
+ <div class="lnt"><div id="lndTk"></div></div>
+</div>
+<script src="js/enhancements.js"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".5" stop-color="#f5b301"/><stop offset="1" stop-color="#d98e04"/></linearGradient>
+<linearGradient id="gSil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset=".5" stop-color="#cbd5e1"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>
+<linearGradient id="gBro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcd9b6"/><stop offset=".5" stop-color="#e08a3c"/><stop offset="1" stop-color="#b4601f"/></linearGradient>
+</defs></svg>
+<script src="js/sport-icons.js"></script>
+<script src="js/team-colors.js"></script>
+</body>
+</html>
